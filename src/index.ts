@@ -22,7 +22,6 @@ async function callParse(kind: 'source'|'file', payload: string): Promise<string
   u8(inPtr, input.length, memory).set(input);
 
   const outBufPtr = exp.alloc(8); // two i32s: ptr + len
-  const dv = new DataView(memory.buffer);
 
   let rc = 1;
   if (kind === 'source') {
@@ -37,6 +36,9 @@ async function callParse(kind: 'source'|'file', payload: string): Promise<string
     exp.dealloc(pPtr, pathBytes.length);
   }
 
+  // Memory may have grown during parsing, which detaches previous ArrayBuffers.
+  // Recreate views AFTER parse_* returns to avoid detached buffers.
+  const dv = new DataView(memory.buffer);
   const outPtr = dv.getUint32(outBufPtr, true);
   const outLen = dv.getUint32(outBufPtr + 4, true);
 
@@ -62,4 +64,10 @@ export async function parseSwiftAst(source: string): Promise<any> {
     const json = await callParse('file', source);
     return JSON.parse(json);
   }
+}
+
+export async function parseSwiftFile(filePath: string): Promise<any> {
+  const content = await fs.readFile(filePath, 'utf8');
+  const json = await callParse('file', content);
+  return JSON.parse(json);
 }

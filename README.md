@@ -2,6 +2,14 @@
 
 Swift AST parsing in Node via WebAssembly (WASI), powered by SwiftSyntax + SwiftParser.
 
+## Quick Start
+
+Run without installation! Just use:
+
+```bash
+npx @flisk/swift-ast /path/to/file.swift
+```
+
 ## Install
 
 ```bash
