@@ -23,7 +23,7 @@
   "scripts": {
     "compile": "tsc -p tsconfig.json",
     "build": "bash ./scripts/build-wasm.sh && npm run compile",
-    "test": "node --test"
+    "test": "node tests"
   },
   "devDependencies": {
     "@types/node": "^24.5.2",
@@ -32,5 +32,14 @@
   "engines": {
     "node": ">=18.17"
   },
-  "license": "MIT"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fliskdata/swift-ast.git"
+  },
+  "author": "Sameen Karim",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fliskdata/swift-ast/issues"
+  },
+  "homepage": "https://github.com/fliskdata/swift-ast#readme"
 }
