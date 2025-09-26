@@ -11,16 +11,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - uses: swift-actions/setup-swift@v2
-        with:
-          swift-version: '6.1'
 
-      - name: Install Swift WASI SDK
+      - name: Install Swift via Swiftly
         run: |
-          set -euxo pipefail
-          SWIFT_WASI_SDK_URL="https://download.swift.org/swift-6.1-release/wasm/swift-6.1-RELEASE/swift-6.1-RELEASE_wasm.artifactbundle.tar.gz"
-          swift --version
-          swift sdk install "$SWIFT_WASI_SDK_URL"
+          curl -O https://download.swift.org/swiftly/darwin/swiftly.pkg && \
+          installer -pkg swiftly.pkg -target CurrentUserHomeDirectory && \
+          ~/.swiftly/bin/swiftly init --quiet-shell-followup && \
+          . "${SWIFTLY_HOME_DIR:-$HOME/.swiftly}/env.sh" && \
+          hash -r
+
+      - name: Install Swift WASM SDK
+        run: |
+          swift sdk install https://download.swift.org/swift-6.2-release/wasm/swift-6.2-RELEASE/swift-6.2-RELEASE_wasm.artifactbundle.tar.gz --checksum fe4e8648309fce86ea522e9e0d1dc48e82df6ba6e5743dbf0c53db8429fb5224
         
       - name: Install Dependencies
         run: npm ci
