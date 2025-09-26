@@ -22,17 +22,14 @@ jobs:
           ~/.swiftly/bin/swiftly install 6.2 && \
           ~/.swiftly/bin/swiftly use 6.2 && \
           swift --version
-
-      - name: Install Swift WASM SDK
-        run: |
-          swift sdk install https://download.swift.org/swift-6.2-release/wasm/swift-6.2-RELEASE/swift-6.2-RELEASE_wasm.artifactbundle.tar.gz --checksum fe4e8648309fce86ea522e9e0d1dc48e82df6ba6e5743dbf0c53db8429fb5224 && \
-          swift sdk list
         
       - name: Install Dependencies
         run: npm ci
 
       - name: Build
-        run: npm run build
+        run: |
+          swift sdk install https://download.swift.org/swift-6.2-release/wasm/swift-6.2-RELEASE/swift-6.2-RELEASE_wasm.artifactbundle.tar.gz --checksum fe4e8648309fce86ea522e9e0d1dc48e82df6ba6e5743dbf0c53db8429fb5224 && \
+          npm run build
 
       - name: Test
         run: npm run test
