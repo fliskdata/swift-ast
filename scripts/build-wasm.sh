@@ -4,7 +4,7 @@ set -euo pipefail
 # Build SwiftSyntax+SwiftParser to WebAssembly (WASI Reactor)
 # Prereqs (one-time): install Swift 6.x toolchain (see README.md for instructions)
 
-SWIFT_SDK_ID=${SWIFT_SDK_ID:-"swift-6.2-RELEASE_wasm"}
+SWIFT_SDK_ID=${SWIFT_SDK_ID:-"$(swift sdk list | grep 'swift-.*_wasm$' | head -n 1 | cut -d' ' -f1)"}
 
 pushd swift >/dev/null
 swift build -c release \
