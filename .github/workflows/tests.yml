@@ -11,17 +11,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: Install Swift via Swiftly
-        run: |
-          curl -O https://download.swift.org/swiftly/darwin/swiftly.pkg && \
-          installer -pkg swiftly.pkg -target CurrentUserHomeDirectory && \
-          ~/.swiftly/bin/swiftly init --quiet-shell-followup && \
-          . "${SWIFTLY_HOME_DIR:-$HOME/.swiftly}/env.sh" && \
-          hash -r && \
-          ~/.swiftly/bin/swiftly install 6.2 && \
-          ~/.swiftly/bin/swiftly use 6.2 && \
-          swift --version
+      - uses: swift-actions/setup-swift@next
+        with:
+          swift-version: 6.2
 
       - name: Install Swift WASM SDK
         run: |
