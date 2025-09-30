@@ -18,10 +18,7 @@ jobs:
           tar zxf swiftly-$(uname -m).tar.gz && \
           ./swiftly init --quiet-shell-followup && \
           . "${SWIFTLY_HOME_DIR:-$HOME/.local/share/swiftly}/env.sh" && \
-          hash -r && \
-          ~/.swiftly/bin/swiftly install 6.2 && \
-          ~/.swiftly/bin/swiftly use 6.2 && \
-          swift --version
+          hash -r
 
       - name: Install Swift WASM SDK
         run: |
