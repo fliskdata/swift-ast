@@ -13,7 +13,7 @@ This package compiles SwiftSyntax + SwiftParser to a WASI module and exposes a s
 - follow simple identifier references within lexical scope
 - surface naive type hints where present (e.g., `let x: Int`)
 
-It’s designed for program analysis pipelines like `fliskdata/analyze-tracking` and can also be used as a CLI with `npx`.
+It’s designed for use in program analysis pipelines like [`@flisk/analyze-tracking`](https://github.com/fliskdata/analyze-tracking) and can also be used as a CLI with `npx`.
 
 ## Quick Start (CLI)
 
