@@ -1,6 +1,8 @@
 # @flisk/swift-ast
 
-Swift AST parsing in Node via WebAssembly (WASI), powered by SwiftSyntax + SwiftParser.
+Swift AST parsing in JavaScript via WebAssembly (WASM), powered by SwiftSyntax + SwiftParser.
+
+[![NPM version](https://img.shields.io/npm/v/@flisk/swift-ast.svg)](https://www.npmjs.com/package/@flisk/swift-ast) [![Tests](https://github.com/fliskdata/swift-ast/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/fliskdata/swift-ast/actions/workflows/tests.yml)
 
 ## Quick Start
 
