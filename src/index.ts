@@ -1,6 +1,7 @@
 import { promises as fs } from 'node:fs';
 import { join } from 'node:path';
 import { getInstance, u8 } from './wasi-loader.js';
+export * from './analyze.js';
 
 type WasmExports = {
   memory: WebAssembly.Memory;
