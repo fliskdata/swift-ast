@@ -2,7 +2,7 @@
 
 Swift AST parsing in JavaScript via WebAssembly (WASM), powered by SwiftSyntax + SwiftParser.
 
-[![NPM version](https://img.shields.io/npm/v/@flisk/swift-ast.svg)](https://www.npmjs.com/package/@flisk/swift-ast) [![Tests](https://github.com/fliskdata/swift-ast/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/fliskdata/swift-ast/actions/workflows/tests.yml)
+[![NPM version](https://img.shields.io/npm/v/@flisk/swift-ast.svg)](https://www.npmjs.com/package/@flisk/swift-ast) [![Tests](https://github.com/fliskdata/swift-ast/actions/workflows/checks.yml/badge.svg?branch=main)](https://github.com/fliskdata/swift-ast/actions/workflows/checks.yml)
 
 ## Introduction
 
