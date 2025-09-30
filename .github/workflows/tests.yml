@@ -5,15 +5,23 @@ on:
 
 jobs:
   test:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-      - uses: swift-actions/setup-swift@next
-        with:
-          swift-version: 6.2
+          node-version: 22
+
+      - name: Install Swift via Swiftly
+        run: |
+          curl -O https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz && \
+          tar zxf swiftly-$(uname -m).tar.gz && \
+          ./swiftly init --quiet-shell-followup && \
+          . "${SWIFTLY_HOME_DIR:-$HOME/.local/share/swiftly}/env.sh" && \
+          hash -r && \
+          ~/.swiftly/bin/swiftly install 6.2 && \
+          ~/.swiftly/bin/swiftly use 6.2 && \
+          swift --version
 
       - name: Install Swift WASM SDK
         run: |
