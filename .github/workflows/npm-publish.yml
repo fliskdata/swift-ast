@@ -29,6 +29,11 @@ jobs:
           node-version: 22
           registry-url: https://registry.npmjs.org/
 
+      - name: Download build artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: package-dist
+
       - name: Publish Package to NPM
         run: npm publish --provenance --access public
         env:
