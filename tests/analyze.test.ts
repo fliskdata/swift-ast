@@ -6,19 +6,7 @@ import { parseSwiftAst, analyzeAst } from '../dist/index.js';
 
 const FIX_DIR = join(process.cwd(), 'tests', 'fixtures');
 const FILE = join(FIX_DIR, 'analyze.swift');
-
-const SOURCE = `
-struct Foo {
-  let x: Int
-  func bar(_ y: Int) -> Int { x + y }
-}
-
-func bar(_ n: Int) -> Int { n * 2 }
-
-let a = Foo()
-let b = bar(3)
-let c = a.bar(4)
-`;
+const SOURCE = await fs.readFile(FILE, 'utf8');
 
 await fs.mkdir(FIX_DIR, { recursive: true });
 await fs.writeFile(FILE, SOURCE, 'utf8');
@@ -38,4 +26,21 @@ test('analyzeAst extracts symbols and calls', async () => {
   // At least one receiver-less and one with receiver
   assert.ok(callsBar.some(c => !c.receiver));
   assert.ok(callsBar.some(c => c.receiver === 'a'));
+
+  // Callee chain
+  const callInst = callsBar.find(c => c.receiver === 'a');
+  assert.ok(callInst?.calleeChain && callInst.calleeChain.at(-1) === 'bar');
+
+  // Args
+  if (callInst) {
+    const args = analysis.getCallArgs(callInst.id);
+    assert.ok(Array.isArray(args));
+  }
+
+  // Enclosing function for a global call should be undefined or global
+  const globalCall = callsBar.find(c => !c.receiver);
+  if (globalCall) {
+    const enc = analysis.findEnclosing(globalCall.id);
+    assert.ok(!enc || enc.kind === 'function');
+  }
 });

@@ -9,7 +9,7 @@ Swift AST parsing in JavaScript via WebAssembly (WASM), powered by SwiftSyntax +
 This package compiles SwiftSyntax + SwiftParser to a WASI module and exposes a simple JavaScript API to parse Swift source into a compact JSON AST. On top of that, it provides a lightweight analyzer (inspired by Ruby Prism’s ergonomics) to:
 
 - extract declarations (functions, methods, classes, structs, enums, variables)
-- find and inspect function/method calls
+- find and inspect function/method calls (with callee chain and base identifier)
 - follow simple identifier references within lexical scope
 - surface naive type hints where present (e.g., `let x: Int`)
 
@@ -83,7 +83,13 @@ console.log([...analysis.byName.keys()]);
 // All calls to a function/method named "track"
 const calls = analysis.findCallsByName('track');
 for (const c of calls) {
-  console.log({ name: c.name, receiver: c.receiver, args: c.argsCount, at: c.range.start });
+  console.log({
+    name: c.name,
+    receiver: c.receiver,
+    base: c.baseIdentifier,
+    chain: c.calleeChain,
+    args: analysis.getCallArgs(c.id)
+  });
 }
 
 // Resolve a simple name to its symbol (best-effort)
@@ -105,8 +111,8 @@ type Analysis = {
 ```
 
 Notes:
-- The analyzer is syntax-driven (no full type-checker). Name resolution is lexical and best-effort.
-- Variable type annotations (e.g., `let x: Int`) are extracted where present; inferred types are not computed.
+- Syntax-driven only (no full type-checker). Name resolution is lexical and best-effort.
+- Exposes helpers to ease tracking analysis: labeled args, dictionary extraction, enclosing symbol lookup, const string collection, and callee text/chain utilities.
 
 ## CLI usage
 
