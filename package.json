@@ -10,12 +10,12 @@
     }
   },
   "files": [
+    "bin",
     "dist",
-    "wasm/swift_ast_wasi.wasm",
+    "wasm",
     "WASI.md",
     "README.md",
-    "LICENSE",
-    "bin"
+    "LICENSE"
   ],
   "bin": {
     "swift-ast": "./bin/cli.js"
