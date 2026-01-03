@@ -3,11 +3,20 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { WASI } from 'node:wasi';
 import { createRequire } from 'node:module';
+import { gunzipSync } from 'node:zlib';
 
 const require = createRequire(import.meta.url);
 
-const WASM_PATH = process.env.SWIFT_AST_WASM_PATH ??
-  require.resolve('../wasm/swift_ast_wasi.wasm');
+// Support both compressed (.wasm.gz) and uncompressed (.wasm) paths
+const DEFAULT_WASM_PATH = (() => {
+  try {
+    return require.resolve('../wasm/swift_ast_wasi.wasm.gz');
+  } catch {
+    return require.resolve('../wasm/swift_ast_wasi.wasm');
+  }
+})();
+
+const WASM_PATH = process.env.SWIFT_AST_WASM_PATH ?? DEFAULT_WASM_PATH;
 
 let _instance: WebAssembly.Instance | null = null;
 let _memory: WebAssembly.Memory | null = null;
@@ -26,7 +35,13 @@ export async function getInstance() {
     env: {}
   });
 
-  const wasmBytes = await fs.readFile(WASM_PATH);
+  let wasmBytes = await fs.readFile(WASM_PATH);
+  
+  // Decompress if gzipped
+  if (WASM_PATH.endsWith('.gz')) {
+    wasmBytes = gunzipSync(wasmBytes);
+  }
+  
   const imports = { wasi_snapshot_preview1: _wasi.wasiImport } as any;
 
   const module = await WebAssembly.compile(wasmBytes as unknown as BufferSource);

@@ -17,4 +17,8 @@ mkdir -p wasm
 # SwiftPM artifact path for wasm target
 cp swift/.build/wasm32-unknown-wasip1/release/SwiftAstWasm.wasm wasm/swift_ast_wasi.wasm
 
-echo "Built wasm -> wasm/swift_ast_wasi.wasm"
+# Compress for distribution (reduces ~83MB to ~26MB)
+gzip -k -f -9 wasm/swift_ast_wasi.wasm
+
+echo "Built wasm -> wasm/swift_ast_wasi.wasm ($(du -h wasm/swift_ast_wasi.wasm | cut -f1))"
+echo "Compressed -> wasm/swift_ast_wasi.wasm.gz ($(du -h wasm/swift_ast_wasi.wasm.gz | cut -f1))"
