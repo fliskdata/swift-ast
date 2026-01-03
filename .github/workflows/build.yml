@@ -11,7 +11,7 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install Swift 6.2 + WASM SDK via Swiftly (Linux)
+      - name: Install Swift 6.2.3 + WASM SDK via Swiftly (Linux)
         run: |
           # Install Swiftly
           curl -O https://download.swift.org/swiftly/linux/swiftly-$(uname -m).tar.gz
@@ -20,23 +20,25 @@ jobs:
           SWIFTLY_HOME="${SWIFTLY_HOME_DIR:-$HOME/.local/share/swiftly}"
           . "$SWIFTLY_HOME/env.sh"
           
-          # Install and pin Swift 6.2 to match the WASM SDK
-          swiftly install 6.2
-          swiftly use 6.2
+          # Install and pin Swift 6.2.3 to match the WASM SDK
+          swiftly install 6.2.3
+          swiftly use 6.2.3
           
           # Add to GITHUB_PATH for subsequent steps
           echo "$SWIFTLY_HOME/bin" >> $GITHUB_PATH
-          echo "$SWIFTLY_HOME/toolchains/6.2/usr/bin" >> $GITHUB_PATH
+          echo "$SWIFTLY_HOME/toolchains/6.2.3/usr/bin" >> $GITHUB_PATH
           swift --version
           
           # Install WASM SDK
-          swift sdk install https://download.swift.org/swift-6.2-release/wasm/swift-6.2-RELEASE/swift-6.2-RELEASE_wasm.artifactbundle.tar.gz --checksum fe4e8648309fce86ea522e9e0d1dc48e82df6ba6e5743dbf0c53db8429fb5224
+          swift sdk install https://download.swift.org/swift-6.2.3-release/wasm/swift-6.2.3-RELEASE/swift-6.2.3-RELEASE_wasm.artifactbundle.tar.gz
           swift sdk list
 
       - name: Install Dependencies
         run: npm ci
 
       - name: Build
+        env:
+          SWIFT_SDK_ID: swift-6.2.3-RELEASE_wasm
         run: npm run build
 
       - name: Upload build artifact
